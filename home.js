@@ -1321,7 +1321,13 @@ var fayna = [
     [54, 8],
     [81, 8],
   ],
-  [], //24
+  [ //24
+    [26, 7],
+    [56, 7],
+    [89, 7],
+    [120, 7],
+    [140, 7],
+  ],
   [ //25
     [22, 7],
     [47, 7],
@@ -1336,7 +1342,8 @@ var buildingSize = 150;
 var verticalMargin = 10;
 var horizontalMargin = 100;
 
-canvas.width = window.innerWidth;
+console.log(Math.max(...fayna.map(build => build.length)));
+canvas.width = horizontalMargin + buildingSize * Math.max(...fayna.map(build => build.length)) + horizontalMargin;
 canvas.height = floorSize * maxFloor * fayna.length;
 
 var ctx = canvas.getContext("2d");

@@ -1,0 +1,14 @@
+[
+  { "building": 1, "enterence": 1, "floor": 2, "floorPosition": 0, "floorStep": 0.33, "flat": 1, "payment": 0 },
+  { "building": 1, "enterence": 1, "floor": 2, "floorPosition": 1, "floorStep": 0.33, "flat": 2, "payment": 7309 },
+  { "building": 1, "enterence": 1, "floor": 2, "floorPosition": 2, "floorStep": 0.33, "flat": 3, "payment": 10000, "last": true },
+  { "building": 1, "enterence": 1, "floor": 3, "floorPosition": 0, "floorStep": 0.5, "flat": 4, "payment": 7309 },
+  { "building": 1, "enterence": 1, "floor": 3, "floorPosition": 1, "floorStep": 0.5, "flat": 5, "payment": 3500.5, "last": true },
+  { "building": 1, "enterence": 1, "floor": 4, "floorPosition": 0, "floorStep": 0.33, "flat": 6, "payment": 7309 },
+  { "building": 1, "enterence": 1, "floor": 4, "floorPosition": 1, "floorStep": 0.33, "flat": 7, "payment": 7309 },
+  { "building": 1, "enterence": 1, "floor": 4, "floorPosition": 2, "floorStep": 0.33, "flat": 8, "payment": 0, "last": true },
+  { "building": 1, "enterence": 2, "floor": 2, "floorPosition": 0, "floorStep": 0.5, "flat": 9, "payment": 0 },
+  { "building": 1, "enterence": 2, "floor": 2, "floorPosition": 1, "floorStep": 0.5, "flat": 10, "payment": 7309, "last": true },
+  { "building": 2, "enterence": 1, "floor": 2, "floorPosition": 0, "floorStep": 0.5, "flat": 1, "payment": 7309 },
+  { "building": 2, "enterence": 1, "floor": 2, "floorPosition": 1, "floorStep": 0.5, "flat": 2, "payment": 2000, "last": true }
+]

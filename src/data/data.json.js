@@ -74,6 +74,8 @@ for (const row of tsvParse(await (await fetch(schemaUrl)).text(), autoType)) {
   }
 }
 
+const text = [];
+
 process.stdout.write(JSON.stringify({
   schema,
   totals,

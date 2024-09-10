@@ -13,17 +13,21 @@ import { progress } from "./components/progress.js";
 import { total } from "./components/total.js";
 
 var allBuildings = [1,2,3,4,5,6,7,8,9,10,16,17,18,19,20,21,22,23,24,25];
-var buildings = view(Inputs.select(allBuildings, {value: allBuildings, multiple: true, label: "Buildings"}));
+var buildings = view(Inputs.select(allBuildings, {value: allBuildings, multiple: true, label: "Будинки"}));
 var data = FileAttachment("data/data.json").json();
 ```
 
-<div class="grid grid-cols-1">
-  ${buildings.map(building => html.fragment`<div class="card">${resize(width => progress(data["schema"], {width, building}))}</div>`)}
+<div>
+  ${buildings.map(building => html.fragment`<div class="card"><div class="container">
+    <div class="scrollbar">
+      ${progress(data["schema"], {building})}
+    </div>
+  </div></div>`)}
 </div>
 
 ---
 
-## Goals: 22M UAH
+## Ціль: 22M грн
 
 <div class="grid grid-cols-1">
   <div class="card">
@@ -36,7 +40,7 @@ ${
 
 ---
 
-## Links
+## Посилання
 
 Корисні посилання щодо проекту
 
@@ -50,6 +54,19 @@ ${
 </div>
 
 <style>
+
+.container {
+  display: flex;
+  align-items: flex-start;
+  padding-bottom: 30px;
+}
+.container .scrollbar {
+  overflow-x: scroll;
+  flex: 1;
+}
+.container .scrollbar svg {
+  max-width: none;
+}
 
 .title {
   display: flex;

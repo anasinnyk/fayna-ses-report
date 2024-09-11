@@ -7,6 +7,10 @@ head: <link rel="icon" type="image/jpeg" href="./data/logo.jpg" size="32x32">
   <img src="./data/logo.jpg" alt="ФайнаСЕС">
 </div>
 
+<div class="card">
+  <h2><span class="yellow">&#x26A0;</span> Візуалізація згідно даних наданих керуючою компанією за <b>03.09.2024</b></h2>
+</div>
+
 
 ```js
 import { progress } from "./components/progress.js";

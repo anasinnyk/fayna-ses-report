@@ -11,7 +11,7 @@ const osbbs = [
   "https://docs.google.com/spreadsheets/d/e/2PACX-1vTQhysSj3OkJ3R_KzaqxpPcFXC1pkxJkyw6Dg4boYwZDz088GBGGpkdY2nlU2eQ5uUyhiJh-soBdS0q/pub?gid=0&single=true&output=tsv",
 ];
 
-const totals = [];
+let totals = [];
 const payments = {};
 let i = 0;
 for (const url of osbbs) {
@@ -29,6 +29,8 @@ for (const url of osbbs) {
   }
   i++;
 }
+
+totals = [2014758.5, 1613205, 2410954.75, 913401.5, 828375, 1076885, 728577.22];
 
 const schema = [];
 

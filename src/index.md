@@ -3,6 +3,11 @@ toc: false
 head: <link rel="icon" type="image/jpeg" href="./data/logo.jpg" size="32x32">
 ---
 
+```js
+import { progress } from "./components/progress.js";
+import { total, totalProgress } from "./components/total.js";
+```
+
 <div class="title">
   <img src="./data/logo.jpg" alt="ФайнаСЕС">
 </div>
@@ -11,27 +16,13 @@ head: <link rel="icon" type="image/jpeg" href="./data/logo.jpg" size="32x32">
   <h2><span class="yellow">&#x26A0;</span> Візуалізація згідно даних наданих керуючою компанією за <b>03.09.2024</b></h2>
 </div>
 
-
-```js
-import { progress } from "./components/progress.js";
-import { total } from "./components/total.js";
-
-var allBuildings = [1,2,3,4,5,6,7,8,9,10,16,17,18,19,20,21,22,23,24,25];
-var buildings = view(Inputs.select(allBuildings, {value: allBuildings, multiple: true, label: "Будинки"}));
-var data = FileAttachment("data/data.json").json();
-```
-
-<div>
-  ${buildings.map(building => html.fragment`<div class="card"><div class="container">
-    <div class="scrollbar">
-      ${progress(data["schema"], {building})}
-    </div>
-  </div></div>`)}
-</div>
-
 ---
 
-## Ціль: 22M грн
+## Ціль: 22.7M грн
+
+<div class="grid grid-cols-1">
+  <div class="card">${resize((width) => totalProgress(data["totals"], {width}))}</div>
+</div>
 
 <div class="grid grid-cols-1">
   <div class="card">
@@ -39,6 +30,22 @@ ${
   resize((width) => total(data["totals"], {width}))
 }
   </div>
+</div>
+
+
+```js
+const allBuildings = [1,2,3,4,5,6,7,8,9,10,16,17,18,19,20,21,22,23,24,25];
+const buildings = view(Inputs.select(allBuildings, {value: allBuildings, multiple: true, label: "Будинки"}));
+const fullscreen = view(Inputs.toggle({label: "Показати будинок повністю", value: false}));
+const data = FileAttachment("data/data.json").json();
+```
+
+<div>
+  ${buildings.map(building => html.fragment`<div class="card"><div class="container">
+    <div class="scrollbar">
+      ${progress(data["schema"], {fullscreen, building})}
+    </div>
+  </div></div>`)}
 </div>
 
 
@@ -58,6 +65,14 @@ ${
 </div>
 
 <style>
+
+#observablehq-main {
+  max-width: 100%;
+}
+
+.fullscreen {
+  width: 100%;
+}
 
 .container {
   display: flex;

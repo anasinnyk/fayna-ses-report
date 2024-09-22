@@ -18,7 +18,7 @@ import { total, totalProgress } from "./components/total.js";
 
 ---
 
-## Ціль: 22.7M грн
+## Ціль: 18 047 769 грн
 
 <div class="grid grid-cols-1">
   <div class="card">${resize((width) => totalProgress(data["totals"], {width}))}</div>

@@ -2,7 +2,7 @@ import * as Plot from "npm:@observablehq/plot";
 import {format} from "npm:d3";
 
 export function totalProgress(data, {width} = {}) {
-  const totalGoal = 22700000;
+  const totalGoal = 18047769;
   const totalRaised = data.reduce((sum, d) => sum + d, 0);
   const remaining = totalGoal - totalRaised;
   const colors = ["#fcd703", "lightgray"];

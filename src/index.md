@@ -13,7 +13,7 @@ import { total, totalProgress } from "./components/total.js";
 </div>
 
 <div class="card">
-  <h2><span class="yellow">&#x26A0;</span> Візуалізація згідно даних наданих керуючою компанією за <b>03.09.2024</b></h2>
+  <h2><span class="yellow">&#x26A0;</span> Візуалізація згідно даних наданих керуючою компанією за <b>14.10.2024</b></h2>
 </div>
 
 ---

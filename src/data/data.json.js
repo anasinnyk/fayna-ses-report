@@ -17,7 +17,8 @@ let i = 0;
 for (const url of osbbs) {
   for (const row of tsvParse(await (await fetch(url)).text(), autoType)) {
     const [buildFlat, paymentRow] = Object.values(row);
-    const [building, flat] = buildFlat.split("-");
+    if (!buildFlat) continue;
+    const [building, flat] = buildFlat.split("-").map(x => x.trim());
     const payment = parseFloat(paymentRow.replace(",", ".").replaceAll(" ", ""));
     if (building === "Всього") {
       totals.push(payment);
@@ -30,7 +31,7 @@ for (const url of osbbs) {
   i++;
 }
 
-totals = [2668478.5, 2127317, 3122980.24, 1203750, 1066629, 1377578.86, 966513];
+totals = [2737268.75, 2161564.00, 3165342.75, 1213359.00, 1072129.00, 1410514.00, 998590.00];
 
 const schema = [];
 

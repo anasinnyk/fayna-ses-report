@@ -17,20 +17,39 @@ let i = 0;
 for (const url of osbbs) {
   for (const row of tsvParse(await (await fetch(url)).text(), autoType)) {
     const [buildFlat, paymentRow] = Object.values(row);
-    const [building, flat] = buildFlat.split("-");
+    if (!buildFlat) continue;
+    const [building, flat] = buildFlat.split("-").map(x => x.trim());
+    if (building === undefined || flat === undefined) continue;
     const payment = parseFloat(paymentRow.replace(",", ".").replaceAll(" ", ""));
-    if (building === "Всього") {
-      totals.push(payment);
-    } else {
-      if (!payments[building]) payments[building] = {};
-
-      payments[building][flat] = payment;
-    }
+    if (!payments[building]) payments[building] = {};
+    payments[building][flat] = payment;
   }
   i++;
 }
 
-totals = [2668478.5, 2127317, 3122980.24, 1203750, 1066629, 1377578.86, 966513];
+totals = [2_788_014.75, 2_213_509.00, 3_194_578.75, 1_251_595.00, 1_088_747.00, 1_443_885.00, 1_007_899.00];
+
+let flat_coverage = {
+  total: 3101,
+  min_payment: 7309,
+  goal: 18047769,
+  min_payment_threshold: 10000,
+  non_payers: 0,
+  payers: 0,
+  overpayer: 0,
+  overpayer_money: 0,
+  underpayer: 0,
+  underpayer_money: 0,
+  uncovered: 0,
+  covered_by_underpayers: 0,
+  covered_by_overpayers: 0,
+  covered_by_non_flat_payers: 0,
+  non_flat_payers: 0,
+  non_flat_payers_money: 0,
+  total_flat_on_schema: 0,
+  expected_total_money: 0,
+  covered_by_project_optimizations: 0,
+};
 
 const schema = [];
 
@@ -41,7 +60,7 @@ for (const row of tsvParse(await (await fetch(schemaUrl)).text(), autoType)) {
   if (building !== previousBuilding) {
     lastFlat = 0;
   }
-  
+ 
   if (lastFlatOnFloor === 0) {
     schema.push({
       building,
@@ -59,6 +78,7 @@ for (const row of tsvParse(await (await fetch(schemaUrl)).text(), autoType)) {
     if (missingFlatsRaw && typeof missingFlatsRaw === "string") missingFlats = missingFlatsRaw.split(",").map(x => parseInt(x));
     for (let i = lastFlat + 1; i <= lastFlatOnFloor; i++) {
       if (!missingFlats.includes(i)) {
+        const payment = payments[building] && payments[building][i] ? payments[building][i] : 0;
         schema.push({
           building,
           enterence,
@@ -67,8 +87,25 @@ for (const row of tsvParse(await (await fetch(schemaUrl)).text(), autoType)) {
           last: (i === lastFlatOnFloor) ? true : false,
           floor,
           flat: i,
-          payment: payments[building] && payments[building][i] ? payments[building][i] : 0
+          payment,
         });
+        flat_coverage.total_flat_on_schema++;
+        if (payment === 0) {
+          flat_coverage.non_payers++;
+        } else if (payment < flat_coverage.min_payment){
+          flat_coverage.underpayer_money += flat_coverage.min_payment - payment;
+          flat_coverage.underpayer++;
+        } else if (payment >= flat_coverage.min_payment && payment < flat_coverage.min_payment_threshold) {
+          flat_coverage.overpayer_money += payment - flat_coverage.min_payment;
+          flat_coverage.payers++;
+        } else if (payment >= flat_coverage.min_payment_threshold) {
+          flat_coverage.overpayer_money += payment - flat_coverage.min_payment;
+          flat_coverage.overpayer++;
+        }
+
+        if (payments[building] && payments[building][i]) {
+          delete payments[building][i];
+        }
       }
     }
     lastFlat = lastFlatOnFloor;
@@ -76,10 +113,33 @@ for (const row of tsvParse(await (await fetch(schemaUrl)).text(), autoType)) {
   }
 }
 
-const text = [];
+flat_coverage.non_payers = flat_coverage.non_payers - (flat_coverage.total_flat_on_schema - flat_coverage.total); // remove flats that are not on schema
+
+flat_coverage.non_flat_payers = Object.values(payments).reduce((a, x) => a + Object.keys(x).length, 0);
+flat_coverage.non_flat_payers_money = Object.values(payments).reduce((a, x) => a + Object.values(x).reduce((a, x) => a + x, 0), 0);
+
+flat_coverage.covered_by_overpayers = Math.floor(flat_coverage.overpayer_money / flat_coverage.min_payment)
+flat_coverage.covered_by_non_flat_payers = Math.floor(flat_coverage.non_flat_payers_money / flat_coverage.min_payment);
+flat_coverage.covered_by_underpayers = Math.floor(flat_coverage.underpayer_money / flat_coverage.min_payment);
+flat_coverage.expected_total_money = flat_coverage.min_payment * flat_coverage.total;
+flat_coverage.covered_by_project_optimizations = Math.floor((flat_coverage.expected_total_money - flat_coverage.goal)/flat_coverage.min_payment);
+flat_coverage.uncovered = flat_coverage.total - flat_coverage.payers - flat_coverage.overpayer - flat_coverage.covered_by_overpayers - flat_coverage.covered_by_non_flat_payers - flat_coverage.covered_by_underpayers - flat_coverage.covered_by_project_optimizations;
+
+
+flat_coverage.payers_percentage = (flat_coverage.payers / flat_coverage.total) * 100;
+flat_coverage.overpayer_percentage = (flat_coverage.overpayer / flat_coverage.total) * 100;
+flat_coverage.underpayer_percentage = (flat_coverage.underpayer / flat_coverage.total) * 100;
+flat_coverage.non_flat_payers_percentage = (flat_coverage.non_flat_payers / flat_coverage.total) * 100;
+flat_coverage.covered_by_overpayers_percentage = (flat_coverage.covered_by_overpayers / flat_coverage.total) * 100;
+flat_coverage.covered_by_underpayers_percentage = (flat_coverage.covered_by_underpayers / flat_coverage.total) * 100;
+flat_coverage.covered_by_non_flat_payers_percentage = (flat_coverage.covered_by_non_flat_payers / flat_coverage.total) * 100;
+flat_coverage.covered_by_project_optimizations_percentage = (flat_coverage.covered_by_project_optimizations / flat_coverage.total) * 100;
+flat_coverage.uncovered_percentage = (flat_coverage.uncovered / flat_coverage.total) * 100;
+
 
 process.stdout.write(JSON.stringify({
   schema,
   totals,
+  flat_coverage,
   total: totals.reduce((a, x) => a + x, 0)
 }));

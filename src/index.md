@@ -6,6 +6,8 @@ head: <link rel="icon" type="image/jpeg" href="./data/logo.jpg" size="32x32">
 ```js
 import { progress } from "./components/progress.js";
 import { total, totalProgress } from "./components/total.js";
+import { coverage, textCoverage } from "./components/coverage.js";
+import {format} from "npm:d3";
 ```
 
 <div class="title">
@@ -13,7 +15,7 @@ import { total, totalProgress } from "./components/total.js";
 </div>
 
 <div class="card">
-  <h2><span class="yellow">&#x26A0;</span> Візуалізація згідно даних наданих керуючою компанією за <b>03.09.2024</b></h2>
+  <h2><span class="yellow">&#x26A0;</span> Візуалізація згідно даних наданих керуючою компанією за <b>14.10.2024</b></h2>
 </div>
 
 ---
@@ -31,6 +33,37 @@ ${
 }
   </div>
 </div>
+
+---
+
+## Загальний прогрес по квартирах
+
+```js
+const coverData = data["flat_coverage"];
+```
+
+<div class="grid grid-cols-1">
+  <div class="card">
+  <p>
+      Це достатньо складна візуалізація яка вимагає пояснення на основі яких саме даних вона зроблена.<br/>
+      У нашому комплексі є <b>${coverData.total}</b> квартир. Тоді як на нашій візуалізації ми бачимо <b>${coverData.total_flat_on_schema}</b> квартир, тобто <b>${coverData.total_flat_on_schema - coverData.total}</b> квартир насправді не існує.<br/>
+      (<i>повідомте мене якщо знаєте якісь з таких квартир</i>).<br/>
+      Ми повинні були зробити одноразовий платіж в розмірі <b>${coverData.min_payment.toLocaleString()} грн</b>.<br/>
+      Такий платіж зробили <b>${coverData.payers}(${(format(".2f"))(coverData.payers_percentage)}%)</b> квартир(и) (тут я рахую кількість квартир що зробила мінімум <b>${coverData.min_payment.toLocaleString()} грн.</b> але не більше <b>${coverData.min_payment_threshold.toLocaleString()} грн.</b>).<br/>
+      Деякі з наших сусідів здали більше (<b>${coverData.overpayer}</b> квартир(и)(<b>${(format(".2f"))(coverData.overpayer_percentage)}%</b>)) на суму <b>${coverData.overpayer_money.toLocaleString()} грн.</b> що дозволило перекрити <b>${coverData.covered_by_overpayers}</b>(<b>${(format(".2f"))(coverData.covered_by_overpayers_percentage)}%)</b> платежа.<br/>
+      Деякі здали поки тільки частину (<b>${coverData.underpayer}</b> квартир(и)(<b>${(format(".2f"))(coverData.underpayer_percentage)})%</b>) і їм в сумі ще потрібно доздати <b>${coverData.underpayer_money.toLocaleString()} грн.</b> що повинно перекрити ще <b>${coverData.covered_by_underpayers}</b>(<b>${(format(".2f"))(coverData.covered_by_underpayers_percentage)}%</b>) платежа.<br/>
+      Також нам допомагає комерція (<b>${coverData.non_flat_payers}</b> платники(ів)(<b>${(format(".2f"))(coverData.non_flat_payers_percentage)})%</b>) яка здала <b>${coverData.non_flat_payers_money.toLocaleString()} грн.</b> що дозоляє перекрити ще <b>${coverData.covered_by_non_flat_payers}</b>(<b>${(format(".2f"))(coverData.covered_by_non_flat_payers_percentage)}%</b>) платежа.<br/>
+      Одже нашою ціллю було зіблати <b>${coverData.min_payment.toLocaleString()} грн.</b> з <b>${coverData.total}</b> квартири. І ми очікували зібрати <b>${coverData.expected_total_money.toLocaleString()} грн.</b><br/>
+      Але проект було оптимізовано до <b>${coverData.goal.toLocaleString()} грн.</b> і ми зеконмили <b>${(coverData.expected_total_money - coverData.goal).toLocaleString()} грн.</b> що дозволило перекрити <b>${coverData.covered_by_project_optimizations}</b>(<b>${(format(".2f"))(coverData.covered_by_project_optimizations_percentage)}%</b>) платежа.
+      Таким чином нам з вами залишилось перекрити ще <b>${coverData.uncovered}</b>(<b>${(format(".2f"))(coverData.uncovered_percentage)}%</b>) платежа.
+  </p>
+  ${coverage(data["flat_coverage"])}
+  </div>
+</div>
+
+---
+
+## Прогрес по квартирах
 
 
 ```js

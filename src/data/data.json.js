@@ -27,17 +27,19 @@ for (const url of osbbs) {
   i++;
 }
 
-totals = [2_788_014.75, 2_213_509.00, 3_194_578.75, 1_251_595.00, 1_088_747.00, 1_443_885.00, 1_007_899.00];
+totals = [3_254_177.75, 2_409_106.00, 3_485_370.75, 1_362_441.57, 1_223_464.00, 1_635_687.00, 1_175_036.00, 100_000.00];
 
 let flat_coverage = {
   total: 3101,
   min_payment: 7309,
-  goal: 18047769,
+  goal: 17_672_541,
   min_payment_threshold: 10000,
   non_payers: 0,
   payers: 0,
   overpayer: 0,
   overpayer_money: 0,
+  covered_by_sponsors: 0,
+  sponsors_money: totals[totals.length - 1],
   underpayer: 0,
   underpayer_money: 0,
   uncovered: 0,
@@ -118,6 +120,7 @@ flat_coverage.non_payers = flat_coverage.non_payers - (flat_coverage.total_flat_
 flat_coverage.non_flat_payers = Object.values(payments).reduce((a, x) => a + Object.keys(x).length, 0);
 flat_coverage.non_flat_payers_money = Object.values(payments).reduce((a, x) => a + Object.values(x).reduce((a, x) => a + x, 0), 0);
 
+flat_coverage.covered_by_sponsors = Math.floor(flat_coverage.sponsors_money / flat_coverage.min_payment);
 flat_coverage.covered_by_overpayers = Math.floor(flat_coverage.overpayer_money / flat_coverage.min_payment)
 flat_coverage.covered_by_non_flat_payers = Math.floor(flat_coverage.non_flat_payers_money / flat_coverage.min_payment);
 flat_coverage.covered_by_underpayers = Math.floor(flat_coverage.underpayer_money / flat_coverage.min_payment);

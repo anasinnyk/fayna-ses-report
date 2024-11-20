@@ -33,12 +33,24 @@ export function textCoverage(data) {
 }
 
 export function coverage(data) {
+  const payers_percentage = (data.payers / data.total) * 100;
+  const overpayer_percentage = (data.overpayer / data.total) * 100;
+  const underpayer_percentage = (data.underpayer / data.total) * 100;
+  const non_flat_payers_percentage = (data.non_flat_payers / data.total) * 100;
+  const covered_by_overpayers_percentage = (data.covered_by_overpayers / data.total) * 100;
+  const covered_by_underpayers_percentage = (data.covered_by_underpayers / data.total) * 100;
+  const covered_by_non_flat_payers_percentage = (data.covered_by_non_flat_payers / data.total) * 100;
+  const covered_by_project_optimizations_percentage = (data.covered_by_project_optimizations / data.total) * 100;
+  const covered_by_sponsors_percentage = (data.covered_by_sponsors / data.total) * 100;
+  const uncovered_percentage = (data.uncovered / data.total) * 100;
+
   const rectColors = [
     {count: data.overpayer, color: "#fc2403"},
     {count: data.payers, color: "#fcd703"},
     {count: data.covered_by_underpayers, color: "lightyellow"},
     {count: data.covered_by_overpayers, color: "green"},
     {count: data.covered_by_non_flat_payers, color: "lightgreen"},
+    {count: data.covered_by_sponsors, color: "#a17f1a"},
     {count: data.covered_by_project_optimizations, color: "blue"},
     {count: data.uncovered, color: "white"},
   ];
@@ -62,14 +74,16 @@ export function coverage(data) {
     color: {
       legend: true,
       domain: [
-        "Квартири що переплатили", "Квартири що зробили мінімальний платіж",
-        "Квартири перекриті учасниками що зробили менше ніж мінімальний платіж",
-        "Квартири перекриті за рахунок переплат",
-        "Квартири перекриті за рахунок комерції",
-        "Квартири перекриті за рахунок здешевлення проекту",
-        "Не перекриті квартири"
+        `Квартири що переплатили (${data.overpayer}/${(format(".2f"))(overpayer_percentage)}%)`,
+        `Квартири що зробили мінімальний платіж (${data.payers}/${(format(".2f"))(payers_percentage)}%)`,
+        `Квартири перекриті учасниками що зробили менше ніж мінімальний платіж (${data.underpayer}/${(format(".2f"))(underpayer_percentage)}%)`,
+        `Квартири перекриті за рахунок переплат (${data.covered_by_overpayers}/${(format(".2f"))(covered_by_overpayers_percentage)}%)`,
+        `Квартири перекриті за рахунок комерції (${data.covered_by_non_flat_payers}/${(format(".2f"))(covered_by_non_flat_payers_percentage)}%)`,
+        `Квартири перекриті за рахунок спонсорської програми (${data.covered_by_sponsors}/${(format(".2f"))(covered_by_sponsors_percentage)}%)`,
+        `Квартири перекриті за рахунок здешевлення проекту (${data.covered_by_project_optimizations}/${(format(".2f"))(covered_by_project_optimizations_percentage)}%)`,
+        `Не перекриті квартири (${data.uncovered}/${(format(".2f"))(uncovered_percentage)}%)`,
       ],
-      range: ["#fc2403", "#fcd703", "lightyellow", "green", "lightgreen", "blue", "white"],
+      range: ["#fc2403", "#fcd703", "lightyellow", "green", "lightgreen", "#a17f1a", "blue", "#dedede"],
     },
     x: { axis: null },
     y: { axis: null },

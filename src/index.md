@@ -15,12 +15,12 @@ import {format} from "npm:d3";
 </div>
 
 <div class="card">
-  <h2><span class="yellow">&#x26A0;</span> Візуалізація згідно даних наданих керуючою компанією за <b>14.10.2024</b></h2>
+  <h2><span class="yellow">&#x26A0;</span> Візуалізація згідно даних наданих керуючою компанією за <b>18.11.2024</b></h2>
 </div>
 
 ---
 
-## Ціль: 18 047 769 грн
+## Ціль: 17 672 541 грн
 
 <div class="grid grid-cols-1">
   <div class="card">${resize((width) => totalProgress(data["totals"], {width}))}</div>
@@ -44,7 +44,7 @@ const coverData = data["flat_coverage"];
 
 <div class="grid grid-cols-1">
   <div class="card">
-  <p>
+  <p style="display: none">
       Це достатньо складна візуалізація яка вимагає пояснення на основі яких саме даних вона зроблена.<br/>
       У нашому комплексі є <b>${coverData.total}</b> квартир. Тоді як на нашій візуалізації ми бачимо <b>${coverData.total_flat_on_schema}</b> квартир, тобто <b>${coverData.total_flat_on_schema - coverData.total}</b> квартир насправді не існує.<br/>
       (<i>повідомте мене якщо знаєте якісь з таких квартир</i>).<br/>

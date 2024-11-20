@@ -2,7 +2,7 @@ import * as Plot from "npm:@observablehq/plot";
 import {format} from "npm:d3";
 
 export function totalProgress(data, {width} = {}) {
-  const totalGoal = 18047769;
+  const totalGoal = 17_672_541;
   const totalRaised = data.reduce((sum, d) => sum + d, 0);
   const remaining = totalGoal - totalRaised;
   const colors = ["#fcd703", "lightgray"];
@@ -29,10 +29,9 @@ export function totalProgress(data, {width} = {}) {
 }
 
 export function total(data, {width} = {}) {
-  const totalGoal = 18047769;
   const totalRaised = data.reduce((sum, d) => sum + d, 0);
-  const remaining = totalGoal - totalRaised;
   const colors = ["#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3", "#a6d854", "#ffd92f", "#e5c494"];
+  data.pop()
 
   return Plot.plot({
     marginLeft: 30,

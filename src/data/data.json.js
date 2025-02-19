@@ -20,14 +20,19 @@ for (const url of osbbs) {
     if (!buildFlat) continue;
     const [building, flat] = buildFlat.split("-").map(x => x.trim());
     if (building === undefined || flat === undefined) continue;
-    const payment = parseFloat(paymentRow.replace(",", ".").replaceAll(" ", ""));
+    let payment = 0;
+    if (typeof paymentRow !== "string") {
+      payment = paymentRow;
+    } else {
+      payment = parseFloat(paymentRow.replace(",", "").replaceAll(" ", ""));
+    }
     if (!payments[building]) payments[building] = {};
     payments[building][flat] = payment;
   }
   i++;
 }
 
-totals = [3_254_177.75, 2_409_106.00, 3_485_370.75, 1_362_441.57, 1_223_464.00, 1_635_687.00, 1_175_036.00, 100_000.00];
+totals = [3_469_579.75, 2_502_805.00, 3_609_169.75, 1_386_707.00, 1_376_748.00, 1_801_578.00, 1_455_009.00, 173_000.00];
 
 let flat_coverage = {
   total: 3101,
@@ -93,14 +98,18 @@ for (const row of tsvParse(await (await fetch(schemaUrl)).text(), autoType)) {
         });
         flat_coverage.total_flat_on_schema++;
         if (payment === 0) {
+          // console.log("Non-payer ", payment, ` (${building}-${i})`);
           flat_coverage.non_payers++;
-        } else if (payment < flat_coverage.min_payment){
+        } else if (payment < flat_coverage.min_payment) {
+          // console.log("Underpayer", payment, ` (${building}-${i})`);
           flat_coverage.underpayer_money += flat_coverage.min_payment - payment;
           flat_coverage.underpayer++;
         } else if (payment >= flat_coverage.min_payment && payment < flat_coverage.min_payment_threshold) {
+          // console.log("Payer", payment, ` (${building}-${i})`);
           flat_coverage.overpayer_money += payment - flat_coverage.min_payment;
           flat_coverage.payers++;
         } else if (payment >= flat_coverage.min_payment_threshold) {
+          // console.log("Overpayer", payment, ` (${building}-${i})`);
           flat_coverage.overpayer_money += payment - flat_coverage.min_payment;
           flat_coverage.overpayer++;
         }

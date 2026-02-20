@@ -30,7 +30,7 @@ export function totalProgress(data, {width} = {}) {
 
 export function total(data, {width} = {}) {
   const totalRaised = data.reduce((sum, d) => sum + d, 0);
-  const colors = ["#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3", "#a6d854", "#ffd92f", "#e5c494"];
+  const colors = ["#66c2a5", "#fc8d62", "#8da0cb", "#e78ac3", "#a6d854", "#ffd92f", "#e5c494", "#e5e5e5"];
   data.pop()
 
   return Plot.plot({

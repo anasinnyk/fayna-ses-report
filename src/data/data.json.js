@@ -13,6 +13,7 @@ const osbbs = [
 ];
 
 let totals = [];
+
 const payments = {};
 let i = 0;
 for (const url of osbbs) {

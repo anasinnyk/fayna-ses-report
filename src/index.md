@@ -67,7 +67,7 @@ const coverData = data["flat_coverage"];
 
 
 ```js
-const allBuildings = [1,2,3,4,5,6,7,8,9,10,16,17,18,19,20,21,22,23,24,25];
+const allBuildings = [1,2,3,4,5,6,7,8,9,10,16,17,18,19,20,21,22,23,24,25,26];
 const buildings = view(Inputs.select(allBuildings, {value: allBuildings, multiple: true, label: "Будинки"}));
 const fullscreen = view(Inputs.toggle({label: "Показати будинок повністю", value: false}));
 const data = FileAttachment("data/data.json").json();

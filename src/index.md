@@ -20,7 +20,7 @@ import {format} from "npm:d3";
 
 ---
 
-## Ціль: 17 672 541 грн
+## Ціль: 25 000 000 грн
 
 <div class="grid grid-cols-1">
   <div class="card">${resize((width) => totalProgress(data["totals"], {width}))}</div>

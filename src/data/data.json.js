@@ -37,7 +37,7 @@ totals = [4_485_020.75, 3_025_408.00, 4_426_149.75, 1_788_470.00, 1_818_715.00, 
 let flat_coverage = {
   total: 3101,
   min_payment: 7309,
-  goal: 17_672_541,
+  goal: 25_000_000,
   min_payment_threshold: 10000,
   non_payers: 0,
   payers: 0,
